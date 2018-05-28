@@ -1,0 +1,73 @@
+---
+title: "Exercise141"
+output: pdf_document
+---
+
+## Counting Argument
+
+number of ways to choose 3 of n items:
+
+We start by choosing 1 of n, which we can do n ways(1 per element in "bag")
+
+then we choose 1 or the n-1 remaining elements, we can do this n-1 ways
+
+and lastly we chose 1 of the n-2 remaining elements, this can be done n-2 ways
+
+so the total is n\*(n-1)\*(n-2) 
+
+however this would count different orders of choosing elements as different. we can fix this by figuring out how many we "double count", essentially if we pick 3 elements and there are k ways to rearrange them, then we expect there to be n\*(n-1)\*(n-2)/k ways to choose (any one choice would be "double counted" k times)
+
+now we need to figure out what k is, there are 3 choices for the first element, 2 choices for the second(one is already used) and 1 choice for the last element (2 are already used) this would imply that k=3\*2\*1, or k=6
+
+so this counting argument says the total number of ways to choose 3 items from n items is:
+n\*(n-1)\*(n-2)/6
+
+## Inductive Argument:
+
+We start out with a lemma (pascals rule), showing $$\binom{n+1}{k}=\binom{n}{k}+\binom{n}{k-1}$$
+imagine we have n+1 objects, we could partition them with 1 in set a, and n is set b
+$$O | OOO....OOO$$
+We can now break down the number of ways to choose K objects from this into, 1 element from a, and k-1 from b $$1*\binom{n}{k-1} $$ (1 way to choose 1 of 1 elements)
+
+we  can also select 0 objects from a and k objects from b $$\binom{n}{k} $$
+
+so our total is $$\binom{n+1}{k}=\binom{n}{k}+\binom{n}{k-1}$$
+
+
+for the bulk of the proof we start out with the obvious, there are n ways to choose 1 items from n,
+$$\binom{n}{1}=n$$
+
+I hypothesize $$\binom{n}{2}=n*(n-1)/2$$ 
+we start with the base case, there is 1 way to choose 2 of 2 items
+$$\binom{2}{2}=2*1/2=1$$
+next by inductive hypothesis
+$$\binom{n+1}{2}=(n+1)(n)/2$$
+we use our lemma (pascals rule) to convert this to
+$$\binom{n}{2}+\binom{n}{2-1}=(n+1)(n)/2$$
+$$\binom{n}{2}+\binom{n}{1}=((n-1) +2)(n)/2$$
+$$\binom{n}{2}+\binom{n}{1}=(n-1)(n)/2  +(2)(n)/2$$
+$$\binom{n}{2}+\binom{n}{1}=(n)(n-1)/2+n$$
+this matches our values for n choose 2 and n choose 1
+
+now I hypothesize $$\binom{n}{3}=n*(n-1)*(n-2)/6$$ 
+
+for the base case 3 choose 3 = 1
+
+$$\binom{3}{3}=3*2*1/6=1$$
+
+next by inductive hypothesis
+$$\binom{n+1}{3}=(n+1)(n)(n-1)/6$$
+we use our lemma (pascals rule) to convert this to
+$$\binom{n}{3} +\binom{n}{3-1}=(n+1)(n)(n-1)/6$$
+
+$$\binom{n}{3} +\binom{n}{2}=((n-2) +3)(n)(n-1)/6$$
+
+$$\binom{n}{3} +\binom{n}{2}=((n-2) +3)(n)(n-1)/6$$
+
+$$\binom{n}{3} +\binom{n}{2}=(n-2)(n)(n-1)/6 +3*n*(n-1)/6$$
+$$\binom{n}{3} +\binom{n}{2}=(n)(n-1)(n-2)/6 +n*(n-1)/2$$
+
+$$\binom{n}{2}+\binom{n}{1}=(n)(n-1)/2+n$$
+this matches our values for n choose 3 and n choose 2
+
+It has been shown that this is true for all {n | n>=3} 

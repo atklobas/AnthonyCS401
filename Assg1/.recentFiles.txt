@@ -1,0 +1,3 @@
+/home/aklobas/test1.txt
+/home/aklobas/test2.txt
+/home/aklobas/Downloads/more.txt
