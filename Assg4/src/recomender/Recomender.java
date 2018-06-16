@@ -27,6 +27,10 @@ public class Recomender {
 		
 		addArtistWeights(userArtists);
 	}
+	/**
+	 * lists friends of user identified by passed id
+	 * @param userID
+	 */
 	public void listFriends(int userID) {
 		User user=graph.getUser(userID);
 		System.out.printf("Friends of %s:\n",user.toString());
@@ -34,7 +38,11 @@ public class Recomender {
 			System.out.println(u);
 		}
 	}
-	
+	/**
+	 * identifies users who are friends of both users identified in 2 parameters
+	 * @param user1
+	 * @param user2
+	 */
 	public void commonFriends(int user1, int user2) {
 		User[] common= graph.getCommonFriends(user1, user2);
 		System.out.printf("Friends of both %s and %s:\n",graph.getUser(user1).toString(),graph.getUser(user2).toString());
@@ -43,6 +51,11 @@ public class Recomender {
 		}
 		
 	}
+	/**
+	 * lists all artists liked by both users
+	 * @param user1
+	 * @param user2
+	 */
 	public void	listArtists(int user1, int user2){
 		Artist[] common= graph.getCommonArtists(user1, user2);
 		System.out.printf("Artists liked by both %s and %s:\n",graph.getUser(user1).toString(),graph.getUser(user2).toString());
@@ -50,6 +63,9 @@ public class Recomender {
 			System.out.println(a);
 		}
 	}
+	/**
+	 * lists top 10 artists by listen count
+	 */
 	public void listTop10() {
 		Artist[] common= graph.getTop10();
 		System.out.printf("Top 10 listened to artists:\n");
@@ -58,6 +74,10 @@ public class Recomender {
 		}
 		
 	}
+	/**
+	 * lists the top 10 artists listened to by the user idedntified by the parameter and thier friends 
+	 * @param user
+	 */
 	public void recommend10(int user) {
 		Artist[] common= graph.getTop10(user);
 		System.out.printf("Top 10 artists listened to by friends:\n");

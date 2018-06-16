@@ -3,7 +3,10 @@ package recomender.csv;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-
+/**
+ * this class essentially holds data from a csv file, though really it could be used for any relational data 
+ *
+ */
 public class CSV implements Iterable<String[]>{
 	private String[] titles;
 	private ArrayList<String[]> tuples;
@@ -20,6 +23,11 @@ public class CSV implements Iterable<String[]>{
 	public int getColumns() {
 		return titles.length;
 	}
+	/**
+	 * gets the string array assosiated with row i
+	 * @param i
+	 * @return
+	 */
 	public String[] getTuple(int i) {
 		return tuples.get(i);
 	}
@@ -37,6 +45,7 @@ public class CSV implements Iterable<String[]>{
 		return buffer;
 	}
 	public void addTuple(String[] tuple) {
+		//if there are not as many fields as titles they will be empty. if there are too many fields it's an invalid file
 		String[] toAdd=new String[titles.length];
 		int index=0;
 		for(String s:tuple) {

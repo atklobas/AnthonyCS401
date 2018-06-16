@@ -12,7 +12,12 @@ public class CSVLoader{
 	private char newline;
 	private String dir;
 	
-	
+	/**
+	 * creates a loader that will try to read CSV files in a director
+	 * @param dir directory where data files are stored
+	 * @param seperator the character that specifies a new field (normally a comma or tab)
+	 * @param newline the character that specifies a new record (almost always a newline)
+	 */
 	public CSVLoader(String dir,char seperator,char newline) {
 		if(dir.charAt(dir.length()-1)!='/') {
 			dir+='/';

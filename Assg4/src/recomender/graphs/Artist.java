@@ -3,11 +3,12 @@ package recomender.graphs;
 import java.util.ArrayList;
 
 public class Artist {
-	protected int id;
-	protected String name;
-	protected String url;
-	protected String picture;
-	protected ArrayList<User> fans =new ArrayList<User>();
+	//these are package protected on purpose
+	int id;
+	String name;
+	String url;
+    String picture;
+    ArrayList<User> fans =new ArrayList<User>();
 	public Artist(int id, String name, String url, String picture) {
 		super();
 		this.id = id;
