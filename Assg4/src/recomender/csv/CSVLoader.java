@@ -1,4 +1,4 @@
-package csv;
+package recomender.csv;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import edu.bellevuecollege.anthony.cache.ResourceLoader;
 
-public class CSVLoader implements ResourceLoader<String,CSV>{
+public class CSVLoader{
 	
 	private char seperator;
 	private char newline;
@@ -27,7 +27,6 @@ public class CSVLoader implements ResourceLoader<String,CSV>{
 
 	
 	
-	@Override
 	public CSV loadResource(String location) throws IOException {
 		Scanner s=new Scanner(new File(dir+location));
 		s.useDelimiter(""+newline);

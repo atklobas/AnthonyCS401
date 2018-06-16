@@ -1,4 +1,4 @@
-package graphs;
+package recomender.graphs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,10 +84,7 @@ public class UserGraph {
 		return users.get(user).friends.toArray(new User[0]);
 	}
 	
-	public void listFriends(int user) {
-		
-		
-	}
+	
 	public User[] getCommonFriends(int user1, int user2) {
 		HashSet<User> set=new HashSet<User>();
 		set.addAll(users.get(user1).friends);
@@ -95,9 +92,7 @@ public class UserGraph {
 		return set.toArray(new User[0]);
 		
 	}
-	public void commonFriends(int user1, int user2) {
-		
-	}
+	
 	public Artist[] getCommonArtists(int user1, int user2) {
 		HashSet<Artist> set=new HashSet<Artist>();
 		set.addAll(users.get(user1).artists);
@@ -105,15 +100,13 @@ public class UserGraph {
 		return set.toArray(new Artist[0]);
 		
 	}
-	public void	listArtists(int user1, int user2){
-		
+	public User getUser(int userID) {
+		return users.get(userID);
 	}
-	public void listTop10() {
-		
+	public Artist getArtist(int artistID) {
+		return artists.get(artistID);
 	}
-	public void recommend10(int user) {
-		
-	}
+	
 	
 
 }

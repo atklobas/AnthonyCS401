@@ -1,4 +1,4 @@
-package graphs;
+package recomender.graphs;
 
 import java.util.ArrayList;
 

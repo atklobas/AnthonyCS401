@@ -1,4 +1,4 @@
-package graphs;
+package recomender.graphs;
 
 import java.util.ArrayList;
 
@@ -21,7 +21,11 @@ public class User {
 		artistsWeights.add(weight);
 	}
 	public String toString() {
-		return "User"+id;
+		return "User "+id;
+	}
+
+	public User[] getFriends() {
+		return friends.toArray(new User[0]);
 	}
 
 }
