@@ -6,11 +6,10 @@ import java.nio.file.Files;
 import java.util.Scanner;
 
 public class TextFileLoader implements ResourceLoader<String, String> {
-
 	@Override
 	public String loadResource(String location) throws IOException {
 		File f=new File(location);
-		
+		//this is the fastest way to read files that i've found
 		byte[] chars = Files.readAllBytes(f.toPath());
 
 		

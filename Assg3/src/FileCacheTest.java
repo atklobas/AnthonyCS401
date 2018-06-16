@@ -1,9 +1,11 @@
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.IOException;
 import java.util.Random;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import edu.bellevuecollege.anthony.cache.Cache;
@@ -18,6 +20,13 @@ class FileCacheTest {
 		String test=cache.get("file1.txt");
 		assertTrue(test.equals("file 1\n"));
 		assertTrue(cache.getMisses()==1);
+	}
+	
+	@Test
+	void testThrows() throws IOException {
+		Cache<String,String> cache=new Cache<String,String>(3,new TextFileLoader());
+		assertThrows(IOException.class,()->cache.get(""));
+		
 	}
 	
 	
@@ -98,18 +107,20 @@ class FileCacheTest {
 	
 	@Test
 	void randomCached()throws IOException{
-		Cache<String,String> cache=new Cache<String,String>(5,new TextFileLoader());
+		Cache<String,String> cache=new Cache<String,String>(8,new TextFileLoader());
 		for(int i=0;i<100;i++) {
-			int fileNumber=rand.nextInt(5);
+			int fileNumber=rand.nextInt(8);
 			String test=cache.get("file"+fileNumber+".txt");
+			boolean isCorrectFile=test.equals("file "+fileNumber+"\n");
+			assertTrue(isCorrectFile);
 			assertTrue(test.equals("file "+fileNumber+"\n"));
 		}
-		assertTrue(cache.getMisses()<6);
+		assertTrue(cache.getMisses()==8);
 	}
 	
-	@Test
+	@RepeatedTest(10)
 	void random()throws IOException{
-		Cache<String,String> cache=new Cache<String,String>(5,new TextFileLoader());
+		Cache<String,String> cache=new Cache<String,String>(0,new TextFileLoader());
 		for(int i=0;i<100;i++) {
 			int fileNumber=rand.nextInt(8);
 			String test=cache.get("file"+fileNumber+".txt");
@@ -129,9 +140,70 @@ class FileCacheTest {
 		cache.get("file"+2+".txt");
 		cache.get("file"+7+".txt");
 		cache.get("file"+2+".txt");
-		
-		
 	}
+	
+	@Test
+	void testEmptyMissRatio() {
+		Cache<String,String> cache=new Cache<String,String>(3,new TextFileLoader());
+		assertTrue(Double.isNaN(cache.getMissRatio()));
+	}
+	@Test
+	void testEmptyHitRatio() {
+		Cache<String,String> cache=new Cache<String,String>(3,new TextFileLoader());
+		assertTrue(Double.isNaN(cache.getHitRatio()));
+	}
+	
+	
+	@Test
+	void testpartiallyFilledMissRatio() throws IOException {
+		
+		Cache<String,String> cache=new Cache<String,String>(30,new TextFileLoader());
+		cache.get("file"+0+".txt");
+		cache.get("file"+2+".txt");
+		cache.get("file"+7+".txt");
+		cache.get("file"+2+".txt");
+		assertTrue(cache.getMissRatio()==3/4.);
+		cache.get("file"+0+".txt");
+		cache.get("file"+2+".txt");
+		cache.get("file"+7+".txt");
+		cache.get("file"+2+".txt");
+		assertTrue(cache.getMissRatio()==3/8.);
+	}
+	@Test
+	void testpartiallyFilledHitRatio() throws IOException {
+		Cache<String,String> cache=new Cache<String,String>(30,new TextFileLoader());
+		cache.get("file"+0+".txt");
+		cache.get("file"+2+".txt");
+		cache.get("file"+7+".txt");
+		cache.get("file"+2+".txt");
+		assertTrue(cache.getHitRatio()==1/4.);
+		cache.get("file"+0+".txt");
+		cache.get("file"+2+".txt");
+		cache.get("file"+7+".txt");
+		cache.get("file"+2+".txt");
+		assertTrue(cache.getHitRatio()==5/8.);
+	}
+	@Test
+	void testFilledMissRatio() throws IOException{
+		
+		Cache<String,String> cache=new Cache<String,String>(3,new TextFileLoader());
+		cache.get("file"+0+".txt");
+		cache.get("file"+2+".txt");
+		cache.get("file"+7+".txt");
+		cache.get("file"+2+".txt");
+		assertTrue(cache.getMissRatio()==3/4.);
+	}
+	
+	@Test
+	void testFilledHitRatio() throws IOException{
+		Cache<String,String> cache=new Cache<String,String>(3,new TextFileLoader());
+		cache.get("file"+0+".txt");
+		cache.get("file"+2+".txt");
+		cache.get("file"+7+".txt");
+		cache.get("file"+2+".txt");
+		assertTrue(cache.getHitRatio()==1/4.);
+	}
+	
 	@Test
 	void testHitMissRatio() throws IOException {
 		Cache<String,String> cache=new Cache<String,String>(3,new TextFileLoader());
@@ -175,12 +247,16 @@ class FileCacheTest {
 		cache.get("file"+0+".txt");
 		cache.get("file"+1+".txt");
 		cache.get("file"+2+".txt");
-		assertTrue(cache.containsKey("file"+0+".txt"));
-		assertTrue(cache.containsKey("file"+1+".txt"));
-		assertTrue(cache.containsKey("file"+2+".txt"));
-		assertFalse(cache.containsKey("file"+3+".txt"));
-		assertFalse(cache.containsKey("file"+4+".txt"));
-		assertFalse(cache.containsKey("file"+5+".txt"));
+		assertAll("testing keyes", 
+			()->assertTrue(cache.containsKey("file"+0+".txt")),
+			()->assertTrue(cache.containsKey("file"+1+".txt")),
+			()->assertTrue(cache.containsKey("file"+2+".txt")),
+			()->assertFalse(cache.containsKey("file"+3+".txt")),
+			()->assertFalse(cache.containsKey("file"+4+".txt")),
+			()->assertFalse(cache.containsKey("file"+5+".txt"))
+		);
+		
+		
 		
 		assertTrue(cache.containsValue("file "+0+"\n"));
 		assertTrue(cache.containsValue("file "+1+"\n"));
